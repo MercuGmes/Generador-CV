@@ -145,6 +145,21 @@ body.dark .header-logo {
   color: var(--text);
 }
 
+.btn-lang {
+  background: var(--surface-3);
+  color: var(--primary);
+  border: 1.5px solid var(--primary-light);
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .02em;
+  padding: 7px 12px;
+}
+
+.btn-lang:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
 .layout {
   display: grid;
   grid-template-columns: 460px 1fr;
@@ -881,8 +896,16 @@ body.dark .cv-paper {
 }
 
 @media (max-width: 640px) {
-  .header-brand h1 { font-size: .95rem; }
-  .btn { padding: 7px 13px; font-size: .8rem; }
+  .header-inner { padding: 0 12px; gap: 8px; }
+  .header-logo { width: 30px; height: 30px; }
+  .header-brand { gap: 8px; min-width: 0; }
+  .header-brand > div { min-width: 0; }
+  .header-brand h1 { font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-brand p { display: none; }
+  .header-actions { gap: 6px; flex-shrink: 0; }
+  .btn { padding: 7px 10px; font-size: .78rem; }
+  .btn-secondary { display: none; }
+  .btn-lang { padding: 6px 9px; font-size: .74rem; }
   .field-row { grid-template-columns: 1fr; }
   #cv-form { padding: 16px; }
   .cv-content { padding: 28px 24px; }

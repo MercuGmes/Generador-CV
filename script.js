@@ -1,23 +1,228 @@
 const JOB_TITLES = [
-  "Desarrollador Frontend","Desarrollador Backend","Desarrollador Full Stack",
-  "Desarrollador Web","Desarrollador de Software","Ingeniero de Software",
-  "Ingeniero DevOps","Arquitecto de Software","Analista de Sistemas",
-  "Analista de Datos","Científico de Datos","Ingeniero de Machine Learning",
-  "Ingeniero de Datos","Administrador de Bases de Datos","Administrador de Redes",
-  "Ingeniero de Ciberseguridad","Analista de Ciberseguridad","QA Engineer",
-  "Scrum Master","Product Owner","Product Manager","Gerente de Proyecto",
-  "UX Designer","UI Designer","Diseñador Gráfico","Diseñador Web",
-  "Contador","Contador Público","Auditor","Gerente Financiero","Analista Financiero",
-  "Gerente de Marketing","Analista de Marketing","Community Manager","SEO Specialist",
-  "Gerente de Ventas","Ejecutivo de Ventas","Representante de Ventas",
-  "Gerente de Recursos Humanos","Reclutador","Especialista en RRHH",
-  "Abogado","Médico","Enfermero","Psicólogo","Nutriólogo","Arquitecto",
-  "Ingeniero Civil","Ingeniero Mecánico","Ingeniero Eléctrico","Ingeniero Industrial",
-  "Maestro","Profesor Universitario","Coordinador Académico",
-  "Gerente General","Director de Operaciones","Director Ejecutivo"
+  // Tecnología
+  {es:"Desarrollador Frontend",         en:"Frontend Developer"},
+  {es:"Desarrollador Backend",          en:"Backend Developer"},
+  {es:"Desarrollador Full Stack",       en:"Full Stack Developer"},
+  {es:"Desarrollador Web",              en:"Web Developer"},
+  {es:"Desarrollador de Software",      en:"Software Developer"},
+  {es:"Ingeniero de Software",          en:"Software Engineer"},
+  {es:"Ingeniero DevOps",               en:"DevOps Engineer"},
+  {es:"Arquitecto de Software",         en:"Software Architect"},
+  {es:"Analista de Sistemas",           en:"Systems Analyst"},
+  {es:"Analista de Datos",              en:"Data Analyst"},
+  {es:"Científico de Datos",            en:"Data Scientist"},
+  {es:"Ingeniero de Machine Learning",  en:"Machine Learning Engineer"},
+  {es:"Ingeniero de Datos",             en:"Data Engineer"},
+  {es:"Administrador de Bases de Datos",en:"Database Administrator"},
+  {es:"Administrador de Redes",         en:"Network Administrator"},
+  {es:"Ingeniero de Ciberseguridad",    en:"Cybersecurity Engineer"},
+  {es:"Analista de Ciberseguridad",     en:"Cybersecurity Analyst"},
+  {es:"QA Engineer",                    en:"QA Engineer"},
+  {es:"Soporte Técnico",                en:"Technical Support"},
+  {es:"Técnico en Sistemas",            en:"IT Technician"},
+  {es:"Técnico en Redes",               en:"Network Technician"},
+  // Administración y oficina
+  {es:"Asistente Administrativo",       en:"Administrative Assistant"},
+  {es:"Auxiliar Administrativo",        en:"Administrative Aide"},
+  {es:"Recepcionista",                  en:"Receptionist"},
+  {es:"Secretaria Ejecutiva",           en:"Executive Secretary"},
+  {es:"Coordinador Administrativo",     en:"Administrative Coordinator"},
+  {es:"Jefe de Oficina",                en:"Office Manager"},
+  {es:"Auxiliar de Oficina",            en:"Office Assistant"},
+  {es:"Capturista de Datos",            en:"Data Entry Clerk"},
+  {es:"Asistente de Dirección",         en:"Executive Assistant"},
+  {es:"Coordinador de Proyectos",       en:"Project Coordinator"},
+  {es:"Analista Administrativo",        en:"Administrative Analyst"},
+  // Contabilidad y finanzas
+  {es:"Contador",                       en:"Accountant"},
+  {es:"Contador Público",               en:"Certified Public Accountant"},
+  {es:"Auxiliar Contable",              en:"Accounting Assistant"},
+  {es:"Auditor",                        en:"Auditor"},
+  {es:"Gerente Financiero",             en:"Financial Manager"},
+  {es:"Analista Financiero",            en:"Financial Analyst"},
+  {es:"Asesor de Crédito",              en:"Credit Advisor"},
+  {es:"Cajero Bancario",                en:"Bank Teller"},
+  {es:"Promotor Financiero",            en:"Financial Promoter"},
+  {es:"Analista de Riesgos",            en:"Risk Analyst"},
+  {es:"Tesorero",                       en:"Treasurer"},
+  {es:"Controlador Financiero",         en:"Financial Controller"},
+  // Ventas y atención al cliente
+  {es:"Vendedor",                       en:"Salesperson"},
+  {es:"Asesor Comercial",               en:"Sales Advisor"},
+  {es:"Ejecutivo de Ventas",            en:"Sales Executive"},
+  {es:"Representante de Ventas",        en:"Sales Representative"},
+  {es:"Promotor de Ventas",             en:"Sales Promoter"},
+  {es:"Agente de Ventas",               en:"Sales Agent"},
+  {es:"Coordinador de Ventas",          en:"Sales Coordinator"},
+  {es:"Gerente de Ventas",              en:"Sales Manager"},
+  {es:"Agente de Servicio al Cliente",  en:"Customer Service Agent"},
+  {es:"Ejecutivo de Cuenta",            en:"Account Executive"},
+  {es:"Asesor de Atención al Cliente",  en:"Customer Support Advisor"},
+  {es:"Operador de Call Center",        en:"Call Center Operator"},
+  {es:"Telemarketer",                   en:"Telemarketer"},
+  // Marketing y comunicación
+  {es:"Gerente de Marketing",           en:"Marketing Manager"},
+  {es:"Analista de Marketing",          en:"Marketing Analyst"},
+  {es:"Community Manager",              en:"Community Manager"},
+  {es:"Especialista en Redes Sociales", en:"Social Media Specialist"},
+  {es:"Creador de Contenido",           en:"Content Creator"},
+  {es:"Copywriter",                     en:"Copywriter"},
+  {es:"Diseñador Gráfico",              en:"Graphic Designer"},
+  {es:"Diseñador Web",                  en:"Web Designer"},
+  {es:"UX Designer",                    en:"UX Designer"},
+  {es:"UI Designer",                    en:"UI Designer"},
+  {es:"Fotógrafo",                      en:"Photographer"},
+  {es:"Videógrafo",                     en:"Videographer"},
+  {es:"Editor de Video",                en:"Video Editor"},
+  {es:"Locutor",                        en:"Broadcaster"},
+  // Recursos humanos
+  {es:"Gerente de Recursos Humanos",    en:"HR Manager"},
+  {es:"Reclutador",                     en:"Recruiter"},
+  {es:"Especialista en RRHH",           en:"HR Specialist"},
+  {es:"Coordinador de Capacitación",    en:"Training Coordinator"},
+  {es:"Analista de Nómina",             en:"Payroll Analyst"},
+  {es:"Jefe de Personal",               en:"Personnel Manager"},
+  // Educación
+  {es:"Maestro de Primaria",            en:"Elementary School Teacher"},
+  {es:"Maestro de Secundaria",          en:"Middle School Teacher"},
+  {es:"Maestro de Preescolar",          en:"Preschool Teacher"},
+  {es:"Profesor Universitario",         en:"University Professor"},
+  {es:"Tutor",                          en:"Tutor"},
+  {es:"Instructor",                     en:"Instructor"},
+  {es:"Capacitador",                    en:"Corporate Trainer"},
+  {es:"Coordinador Académico",          en:"Academic Coordinator"},
+  {es:"Orientador Educativo",           en:"School Counselor"},
+  {es:"Director Escolar",               en:"School Principal"},
+  // Salud
+  {es:"Médico General",                 en:"General Practitioner"},
+  {es:"Médico Especialista",            en:"Medical Specialist"},
+  {es:"Enfermero",                      en:"Nurse"},
+  {es:"Enfermera Jefe",                 en:"Head Nurse"},
+  {es:"Auxiliar de Enfermería",         en:"Nursing Assistant"},
+  {es:"Odontólogo",                     en:"Dentist"},
+  {es:"Psicólogo",                      en:"Psychologist"},
+  {es:"Nutriólogo",                     en:"Nutritionist"},
+  {es:"Fisioterapeuta",                 en:"Physical Therapist"},
+  {es:"Optometrista",                   en:"Optometrist"},
+  {es:"Técnico en Radiología",          en:"Radiology Technician"},
+  {es:"Paramédico",                     en:"Paramedic"},
+  {es:"Farmacéutico",                   en:"Pharmacist"},
+  {es:"Veterinario",                    en:"Veterinarian"},
+  // Logística y operaciones
+  {es:"Coordinador Logístico",          en:"Logistics Coordinator"},
+  {es:"Supervisor de Almacén",          en:"Warehouse Supervisor"},
+  {es:"Auxiliar de Almacén",            en:"Warehouse Assistant"},
+  {es:"Operador de Montacargas",        en:"Forklift Operator"},
+  {es:"Repartidor",                     en:"Delivery Driver"},
+  {es:"Chofer",                         en:"Driver"},
+  {es:"Mensajero",                      en:"Courier"},
+  {es:"Analista de Cadena de Suministro",en:"Supply Chain Analyst"},
+  {es:"Jefe de Distribución",           en:"Distribution Manager"},
+  // Gastronomía y hostelería
+  {es:"Chef",                           en:"Chef"},
+  {es:"Cocinero",                       en:"Cook"},
+  {es:"Ayudante de Cocina",             en:"Kitchen Assistant"},
+  {es:"Panadero",                       en:"Baker"},
+  {es:"Repostero",                      en:"Pastry Chef"},
+  {es:"Mesero",                         en:"Waiter"},
+  {es:"Bartender",                      en:"Bartender"},
+  {es:"Barista",                        en:"Barista"},
+  {es:"Recepcionista de Hotel",         en:"Hotel Receptionist"},
+  {es:"Gerente de Restaurante",         en:"Restaurant Manager"},
+  {es:"Coordinador de Eventos",         en:"Event Coordinator"},
+  // Construcción y mantenimiento
+  {es:"Arquitecto",                     en:"Architect"},
+  {es:"Ingeniero Civil",                en:"Civil Engineer"},
+  {es:"Ingeniero Mecánico",             en:"Mechanical Engineer"},
+  {es:"Ingeniero Eléctrico",            en:"Electrical Engineer"},
+  {es:"Ingeniero Industrial",           en:"Industrial Engineer"},
+  {es:"Residente de Obra",              en:"Site Supervisor"},
+  {es:"Supervisor de Mantenimiento",    en:"Maintenance Supervisor"},
+  {es:"Técnico de Mantenimiento",       en:"Maintenance Technician"},
+  {es:"Electricista",                   en:"Electrician"},
+  {es:"Plomero",                        en:"Plumber"},
+  {es:"Soldador",                       en:"Welder"},
+  {es:"Carpintero",                     en:"Carpenter"},
+  {es:"Albañil",                        en:"Bricklayer"},
+  // Estética y bienestar
+  {es:"Estilista",                      en:"Hair Stylist"},
+  {es:"Cosmetóloga",                    en:"Cosmetologist"},
+  {es:"Manicurista",                    en:"Nail Technician"},
+  {es:"Esteticista",                    en:"Esthetician"},
+  {es:"Instructor de Yoga",             en:"Yoga Instructor"},
+  {es:"Entrenador Personal",            en:"Personal Trainer"},
+  {es:"Terapeuta de Masajes",           en:"Massage Therapist"},
+  // Seguridad
+  {es:"Guardia de Seguridad",           en:"Security Guard"},
+  {es:"Supervisor de Seguridad",        en:"Security Supervisor"},
+  {es:"Vigilante",                      en:"Security Officer"},
+  {es:"Coordinador de Seguridad Privada",en:"Private Security Coordinator"},
+  // Comercio y retail
+  {es:"Cajero",                         en:"Cashier"},
+  {es:"Auxiliar de Tienda",             en:"Store Assistant"},
+  {es:"Gerente de Tienda",              en:"Store Manager"},
+  {es:"Encargado de Inventario",        en:"Inventory Manager"},
+  {es:"Visual Merchandiser",            en:"Visual Merchandiser"},
+  // Bienes raíces
+  {es:"Asesor Inmobiliario",            en:"Real Estate Agent"},
+  {es:"Corredor de Bienes Raíces",      en:"Real Estate Broker"},
+  {es:"Valuador",                       en:"Property Appraiser"},
+  // Derecho y social
+  {es:"Abogado",                        en:"Lawyer"},
+  {es:"Notario",                        en:"Notary"},
+  {es:"Trabajador Social",              en:"Social Worker"},
+  {es:"Orientador Vocacional",          en:"Career Counselor"},
+  // Dirección
+  {es:"Gerente General",                en:"General Manager"},
+  {es:"Gerente de Proyecto",            en:"Project Manager"},
+  {es:"Director de Operaciones",        en:"Operations Director"},
+  {es:"Director Ejecutivo",             en:"Executive Director"},
+  {es:"Scrum Master",                   en:"Scrum Master"},
+  {es:"Product Owner",                  en:"Product Owner"},
+  {es:"Product Manager",                en:"Product Manager"},
+  // Transporte y turismo
+  {es:"Agente de Viajes",               en:"Travel Agent"},
+  {es:"Guía de Turistas",               en:"Tour Guide"},
+  {es:"Piloto",                         en:"Pilot"},
+  {es:"Sobrecargo",                     en:"Flight Attendant"},
 ];
 
+function getTitlesForLang() {
+  return JOB_TITLES.map(t => t[cvLang]);
+}
+
+function translateJobTitle(value, fromLang, toLang) {
+  if (!value) return value;
+  const match = JOB_TITLES.find(t => t[fromLang].toLowerCase() === value.toLowerCase());
+  return match ? match[toLang] : value;
+}
+
 const LANG_LEVELS = ["Nativo","Básico","Intermedio","Avanzado","Bilingüe"];
+
+const CV_TRANSLATIONS = {
+  es: {
+    professionalProfile: "Perfil Profesional",
+    workExperience: "Experiencia Laboral",
+    education: "Educación",
+    skills: "Habilidades",
+    languages: "Idiomas",
+    certifications: "Certificaciones",
+    links: "Enlaces",
+    portfolio: "Portafolio"
+  },
+  en: {
+    professionalProfile: "Professional Profile",
+    workExperience: "Work Experience",
+    education: "Education",
+    skills: "Skills",
+    languages: "Languages",
+    certifications: "Certifications",
+    links: "Links",
+    portfolio: "Portfolio"
+  }
+};
+
+let cvLang = "es";
 
 let state = {
   skills: [],
@@ -301,12 +506,31 @@ function buildContactLine(data) {
   return parts.join('<span style="color:#d1d5db;margin:0 2px;">|</span>');
 }
 
-function buildLinksSection(data) {
+function buildLinksSection(data, t) {
+  const labels = t || CV_TRANSLATIONS[cvLang];
   const lines = [];
   if (data.linkedin) lines.push(`<div>LinkedIn: <a href="${sanitize(formatUrl(data.linkedin))}">${sanitize(stripProtocol(data.linkedin))}</a></div>`);
   if (data.github) lines.push(`<div>GitHub: <a href="${sanitize(formatUrl(data.github))}">${sanitize(stripProtocol(data.github))}</a></div>`);
-  if (data.portfolio) lines.push(`<div>Portafolio: <a href="${sanitize(formatUrl(data.portfolio))}">${sanitize(stripProtocol(data.portfolio))}</a></div>`);
+  if (data.portfolio) lines.push(`<div>${labels.portfolio}: <a href="${sanitize(formatUrl(data.portfolio))}">${sanitize(stripProtocol(data.portfolio))}</a></div>`);
   return lines.join("");
+}
+
+function toggleCvLang() {
+  const prevLang = cvLang;
+  cvLang = cvLang === "es" ? "en" : "es";
+
+  const input = $("job-title");
+  if (input && input.value.trim()) {
+    input.value = translateJobTitle(input.value.trim(), prevLang, cvLang);
+  }
+
+  const btn = $("btn-lang");
+  if (btn) {
+    btn.textContent = cvLang === "es" ? "🌐 EN" : "🌐 ES";
+    btn.title = cvLang === "es" ? "Cambiar CV a inglés" : "Cambiar CV a español";
+  }
+  buildPreview();
+  showToast(cvLang === "en" ? "CV en inglés activado" : "CV en español activado");
 }
 
 function buildCvHtml(data) {
@@ -319,15 +543,17 @@ function buildCvHtml(data) {
   if (contactLine) html += `<div class="cv-contact">${contactLine}</div>`;
   html += `</div>`;
 
+  const t = CV_TRANSLATIONS[cvLang];
+
   if (data.summary) {
     html += `<div class="cv-section">
-      <div class="cv-section-title">Perfil Profesional</div>
+      <div class="cv-section-title">${t.professionalProfile}</div>
       <div class="cv-summary">${sanitize(data.summary)}</div>
     </div>`;
   }
 
   if (data.experiences.length) {
-    html += `<div class="cv-section"><div class="cv-section-title">Experiencia Laboral</div>`;
+    html += `<div class="cv-section"><div class="cv-section-title">${t.workExperience}</div>`;
     data.experiences.forEach(e => {
       const dateStr = [e.start, e.end].filter(Boolean).join(" — ");
       html += `<div class="cv-entry">
@@ -343,7 +569,7 @@ function buildCvHtml(data) {
   }
 
   if (data.educations.length) {
-    html += `<div class="cv-section"><div class="cv-section-title">Educación</div>`;
+    html += `<div class="cv-section"><div class="cv-section-title">${t.education}</div>`;
     data.educations.forEach(e => {
       const dateStr = [e.start, e.end].filter(Boolean).join(" — ");
       html += `<div class="cv-entry">
@@ -359,7 +585,7 @@ function buildCvHtml(data) {
 
   if (data.skills.length) {
     html += `<div class="cv-section">
-      <div class="cv-section-title">Habilidades</div>
+      <div class="cv-section-title">${t.skills}</div>
       <div class="cv-skills">
         ${data.skills.map(s => `<span class="cv-skill-tag">${sanitize(s)}</span>`).join("")}
       </div>
@@ -367,7 +593,7 @@ function buildCvHtml(data) {
   }
 
   if (data.languages.length) {
-    html += `<div class="cv-section"><div class="cv-section-title">Idiomas</div>`;
+    html += `<div class="cv-section"><div class="cv-section-title">${t.languages}</div>`;
     data.languages.forEach(l => {
       html += `<div class="cv-lang-row">
         <span>${sanitize(l.name)}</span>
@@ -378,7 +604,7 @@ function buildCvHtml(data) {
   }
 
   if (data.certifications.length) {
-    html += `<div class="cv-section"><div class="cv-section-title">Certificaciones</div>`;
+    html += `<div class="cv-section"><div class="cv-section-title">${t.certifications}</div>`;
     data.certifications.forEach(c => {
       html += `<div class="cv-entry">
         <div class="cv-entry-header">
@@ -391,10 +617,10 @@ function buildCvHtml(data) {
     html += `</div>`;
   }
 
-  const linksHtml = buildLinksSection(data);
+  const linksHtml = buildLinksSection(data, t);
   if (linksHtml) {
     html += `<div class="cv-section">
-      <div class="cv-section-title">Enlaces</div>
+      <div class="cv-section-title">${t.links}</div>
       <div class="cv-links">${linksHtml}</div>
     </div>`;
   }
@@ -579,13 +805,14 @@ function setupJobTitleSuggestions() {
 
   function renderSuggestions(q) {
     const query = q.toLowerCase();
+    const titles = getTitlesForLang();
     const matches = query.length < 1
       ? []
-      : JOB_TITLES.filter(t => t.toLowerCase().includes(query)).slice(0, 8);
+      : titles.filter(t => t.toLowerCase().includes(query)).slice(0, 8);
 
     list.innerHTML = "";
 
-    matches.forEach((title, i) => {
+    matches.forEach(title => {
       const li = document.createElement("li");
       li.textContent = title;
       li.addEventListener("mousedown", e => {
@@ -597,11 +824,11 @@ function setupJobTitleSuggestions() {
       list.appendChild(li);
     });
 
-    const exactMatch = JOB_TITLES.some(t => t.toLowerCase() === query);
+    const exactMatch = titles.some(t => t.toLowerCase() === query);
     if (query && !exactMatch) {
       const li = document.createElement("li");
       li.className = "add-custom";
-      li.textContent = `+ Agregar "${q}"`;
+      li.textContent = cvLang === "en" ? `+ Add "${q}"` : `+ Agregar "${q}"`;
       li.addEventListener("mousedown", e => {
         e.preventDefault();
         input.value = q;
@@ -683,6 +910,7 @@ function setupFormListeners() {
     }
   });
 
+  $("btn-lang").addEventListener("click", toggleCvLang);
   $("btn-export").addEventListener("click", exportPdf);
   $("btn-clear").addEventListener("click", openClearModal);
   $("modal-cancel").addEventListener("click", closeClearModal);

@@ -24,7 +24,15 @@
         <button class="btn btn-lang" id="btn-lang" title="Cambiar CV a inglés">🌐 EN</button>
         <button class="btn btn-secondary" id="btn-clear">Limpiar todo</button>
         <button class="btn btn-primary" id="btn-export">&#8681; Exportar PDF</button>
+        <button class="btn-hamburger" id="btn-menu" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+      <nav class="nav-drawer" id="nav-drawer">
+        <a href="landing.html">Tutorial</a>
+        <a href="analyzer.html">Analizar CV</a>
+        <a href="about.html">Sobre mí</a>
+      </nav>
     </div>
   </header>
 
@@ -159,5 +167,24 @@
   <div id="print-area" class="print-only"></div>
 
   <script src="script.js"></script>
+  <script>
+    (function () {
+      const menuBtn = document.getElementById('btn-menu');
+      const drawer  = document.getElementById('nav-drawer');
+
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuBtn.classList.toggle('is-open');
+        drawer.classList.toggle('is-open');
+      });
+
+      document.addEventListener('click', () => {
+        menuBtn.classList.remove('is-open');
+        drawer.classList.remove('is-open');
+      });
+
+      drawer.addEventListener('click', (e) => e.stopPropagation());
+    })();
+  </script>
 </body>
 </html>

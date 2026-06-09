@@ -5,7 +5,7 @@
 # Generador de CV ATS
 ### by Aaron MV
 
-**Crea un currículum profesional, compatible con ATS, directamente desde tu navegador — sin registros, sin servidores, sin costos.**
+**Crea un currículum profesional, compatible con ATS, directamente desde tu navegador, sin registros, sin servidores, sin costos.**
 
 ![Open Source](https://img.shields.io/badge/Open%20Source-100%25%20Gratuito-4f83f1?style=for-the-badge)
 ![Sin backend](https://img.shields.io/badge/Sin%20backend-Solo%20HTML%2FCSS%2FJS-22c55e?style=for-the-badge)
@@ -21,7 +21,7 @@
 
 ## ¿Qué es esto?
 
-Un **generador de CV optimizado para ATS** (Applicant Tracking System) completamente gratuito y de código abierto. Todo funciona dentro de tu navegador — no hay base de datos, no hay servidor, no se guarda ningún dato tuyo en ningún lugar.
+Un **generador de CV optimizado para ATS** (Applicant Tracking System) completamente gratuito y de código abierto. Todo funciona dentro de tu navegador, no hay base de datos, no hay servidor, no se guarda ningún dato tuyo en ningún lugar.
 
 Cualquier persona en el mundo puede usarlo para crear un CV profesional de calidad y tener una oportunidad real en el mercado laboral.
 
@@ -76,7 +76,7 @@ Subir/
 2. Sube el contenido de la carpeta `Subir/` como raíz de un repositorio en GitHub
 3. Ve a **Settings → Pages**
 4. En **Source**, selecciona la rama `main` y carpeta `/ (root)`
-5. Guarda — en segundos tendrás tu URL pública
+5. Guarda en segundos tendrás tu URL pública
 
 ```
 https://tu-usuario.github.io/nombre-del-repo/

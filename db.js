@@ -28,6 +28,21 @@ async function signOut() {
   return _sb.auth.signOut();
 }
 
+function resetCvId() {
+  _cvRecordId = null;
+}
+
+async function listCVs() {
+  const user = await getCurrentUser();
+  if (!user) return [];
+  const { data } = await _sb
+    .from('cvs')
+    .select('id, title, updated_at')
+    .eq('user_id', user.id)
+    .order('updated_at', { ascending: false });
+  return data || [];
+}
+
 async function loadCV() {
   const user = await getCurrentUser();
   if (!user) return null;
@@ -45,22 +60,34 @@ async function loadCV() {
   return data.data;
 }
 
-async function saveCV(cvData) {
+async function loadCVById(id) {
+  const { data, error } = await _sb
+    .from('cvs')
+    .select('id, data')
+    .eq('id', id)
+    .single();
+  if (error || !data) return null;
+  _cvRecordId = data.id;
+  return data.data;
+}
+
+async function saveCV(cvData, title) {
   const user = await getCurrentUser();
   if (!user) return { error: 'no_session' };
 
   const now = new Date().toISOString();
+  const cvTitle = title || cvData.fullName || 'CV sin título';
 
   if (_cvRecordId) {
     return _sb
       .from('cvs')
-      .update({ data: cvData, updated_at: now })
+      .update({ data: cvData, title: cvTitle, updated_at: now })
       .eq('id', _cvRecordId);
   }
 
   const { data, error } = await _sb
     .from('cvs')
-    .insert({ user_id: user.id, data: cvData, updated_at: now })
+    .insert({ user_id: user.id, data: cvData, title: cvTitle, updated_at: now })
     .select('id')
     .single();
 
@@ -68,9 +95,13 @@ async function saveCV(cvData) {
   return { error };
 }
 
+async function deleteCVById(id) {
+  const result = await _sb.from('cvs').delete().eq('id', id);
+  if (_cvRecordId === id) _cvRecordId = null;
+  return result;
+}
+
 async function deleteCV() {
   if (!_cvRecordId) return;
-  const result = await _sb.from('cvs').delete().eq('id', _cvRecordId);
-  _cvRecordId = null;
-  return result;
+  return deleteCVById(_cvRecordId);
 }

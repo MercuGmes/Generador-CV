@@ -20,6 +20,7 @@
         <div class="user-status" id="user-status" style="display:none;">
           <span class="user-email" id="user-email"></span>
           <span class="save-status" id="save-status"></span>
+          <button class="btn btn-ghost" id="btn-my-cvs" type="button" style="display:none;">Mis CVs</button>
           <button class="btn btn-ghost" id="btn-signout" type="button"></button>
         </div>
         <button class="btn btn-icon" id="btn-theme" aria-label="Cambiar tema" title="Modo oscuro">
@@ -169,6 +170,16 @@
   </div>
 
   <div id="print-area" class="print-only"></div>
+
+  <div class="cvs-backdrop" id="cvs-backdrop"></div>
+  <div class="cvs-panel" id="cvs-panel">
+    <div class="cvs-panel-header">
+      <h3>Mis CVs guardados</h3>
+      <button class="cvs-panel-close" id="cvs-panel-close" type="button">&#10005;</button>
+    </div>
+    <button class="btn btn-primary cvs-new-btn" id="cvs-new" type="button">+ Nuevo CV</button>
+    <div class="cvs-list" id="cvs-list"></div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="db.js"></script>

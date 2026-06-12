@@ -1020,6 +1020,25 @@ async function init() {
 
   if (window._renderAuthBar) window._renderAuthBar();
 
+  window._loadCvCallback = loadCvData;
+
+  window._clearFormCallback = function () {
+    $("cv-form").querySelectorAll("input, textarea").forEach(el => el.value = "");
+    $("experience-list").innerHTML = "";
+    $("education-list").innerHTML = "";
+    $("languages-list").innerHTML = "";
+    $("certifications-list").innerHTML = "";
+    $("skills-chips").innerHTML = "";
+    state = { skills: [], experiences: [], educations: [], languages: [], certifications: [] };
+    expCount = 0; eduCount = 0; langCount = 0; certCount = 0;
+    const output = $("cv-output");
+    output.innerHTML = "";
+    output.appendChild(emptyStateEl);
+    addExperience();
+    addEducation();
+    showToast("Nuevo CV listo.");
+  };
+
   if (window._pendingCvData) {
     loadCvData(window._pendingCvData);
     window._pendingCvData = null;

@@ -638,11 +638,13 @@ function buildPreview() {
   if (!hasContent) {
     output.innerHTML = "";
     output.appendChild(emptyStateEl);
+    if (window.scheduleSave) window.scheduleSave(data);
     return;
   }
 
   if (emptyStateEl.parentNode === output) output.removeChild(emptyStateEl);
   output.innerHTML = buildCvHtml(data);
+  if (window.scheduleSave) window.scheduleSave(data);
 }
 
 function validateForm() {
@@ -752,6 +754,8 @@ function executeClearAll() {
   const output = $("cv-output");
   output.innerHTML = "";
   output.appendChild(emptyStateEl);
+
+  if (window.onClearAll) window.onClearAll();
 
   closeClearModal();
   showToast("Formulario limpiado.");
@@ -889,6 +893,88 @@ function debounce(fn, delay) {
   };
 }
 
+function loadCvData(data) {
+  if (!data) return;
+
+  $("full-name").value = data.fullName || "";
+  $("job-title").value = data.jobTitle || "";
+  $("email").value = data.email || "";
+  $("phone").value = data.phone || "";
+  $("location").value = data.location || "";
+  $("summary").value = data.summary || "";
+  $("linkedin").value = data.linkedin || "";
+  $("github").value = data.github || "";
+  $("portfolio").value = data.portfolio || "";
+
+  const summaryCounter = $("summary-count");
+  if (summaryCounter) summaryCounter.textContent = `${($("summary").value.length)} / 600`;
+
+  $("skills-chips").innerHTML = "";
+  state.skills = [];
+  (data.skills || []).forEach(s => addSkillChip(s));
+
+  $("experience-list").innerHTML = "";
+  state.experiences = [];
+  expCount = 0;
+  (data.experiences || []).forEach(e => {
+    const id = ++expCount;
+    const block = buildExperienceBlock(id);
+    $("experience-list").appendChild(block);
+    state.experiences.push(id);
+    attachDynamicListeners(block);
+    block.querySelector(`[data-field="exp-role-${id}"]`).value = e.role || "";
+    block.querySelector(`[data-field="exp-company-${id}"]`).value = e.company || "";
+    block.querySelector(`[data-field="exp-start-${id}"]`).value = e.start || "";
+    block.querySelector(`[data-field="exp-end-${id}"]`).value = e.end || "";
+    block.querySelector(`[data-field="exp-desc-${id}"]`).value = e.desc || "";
+  });
+
+  $("education-list").innerHTML = "";
+  state.educations = [];
+  eduCount = 0;
+  (data.educations || []).forEach(e => {
+    const id = ++eduCount;
+    const block = buildEducationBlock(id);
+    $("education-list").appendChild(block);
+    state.educations.push(id);
+    attachDynamicListeners(block);
+    block.querySelector(`[data-field="edu-degree-${id}"]`).value = e.degree || "";
+    block.querySelector(`[data-field="edu-institution-${id}"]`).value = e.institution || "";
+    block.querySelector(`[data-field="edu-start-${id}"]`).value = e.start || "";
+    block.querySelector(`[data-field="edu-end-${id}"]`).value = e.end || "";
+  });
+
+  $("languages-list").innerHTML = "";
+  state.languages = [];
+  langCount = 0;
+  (data.languages || []).forEach(l => {
+    const id = ++langCount;
+    const block = buildLanguageBlock(id);
+    $("languages-list").appendChild(block);
+    state.languages.push(id);
+    attachDynamicListeners(block);
+    block.querySelector(`[data-field="lang-name-${id}"]`).value = l.name || "";
+    block.querySelector(`[data-field="lang-level-${id}"]`).value = l.level || "";
+  });
+
+  $("certifications-list").innerHTML = "";
+  state.certifications = [];
+  certCount = 0;
+  (data.certifications || []).forEach(c => {
+    const id = ++certCount;
+    const block = buildCertificationBlock(id);
+    $("certifications-list").appendChild(block);
+    state.certifications.push(id);
+    attachDynamicListeners(block);
+    block.querySelector(`[data-field="cert-name-${id}"]`).value = c.name || "";
+    block.querySelector(`[data-field="cert-org-${id}"]`).value = c.org || "";
+    block.querySelector(`[data-field="cert-year-${id}"]`).value = c.year || "";
+  });
+
+  updateAllCounters();
+  buildPreview();
+}
+
 function setupFormListeners() {
   const mainFields = ["full-name","job-title","email","phone","location","summary","linkedin","github","portfolio"];
   mainFields.forEach(id => {
@@ -921,15 +1007,26 @@ function setupFormListeners() {
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeClearModal(); });
 }
 
-function init() {
+async function init() {
   emptyStateEl = $("cv-empty");
   if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
   setupFormListeners();
   setupSkillInput();
   setupJobTitleSuggestions();
   setupSummaryCounter();
-  addExperience();
-  addEducation();
+
+  if (window._authReady) await window._authReady;
+  if (window._redirecting) return;
+
+  if (window._renderAuthBar) window._renderAuthBar();
+
+  if (window._pendingCvData) {
+    loadCvData(window._pendingCvData);
+    window._pendingCvData = null;
+  } else {
+    addExperience();
+    addEducation();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);

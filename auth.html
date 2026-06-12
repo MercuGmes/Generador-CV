@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceder — Generador de CV ATS</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body class="auth-page">
+
+  <header class="auth-header">
+    <div class="auth-header-brand">
+      <img src="assets/logo.png" alt="Logo" />
+      <div>
+        <h1>Generador de CV ATS</h1>
+        <p>by Aaron MV</p>
+      </div>
+    </div>
+    <button class="auth-header-theme" id="btn-theme" aria-label="Cambiar tema">
+      <span class="theme-icon-sun">&#9788;</span>
+      <span class="theme-icon-moon">&#9790;</span>
+    </button>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" type="button">Iniciar sesión</button>
+        <button class="auth-tab" id="tab-register" type="button">Registrarse</button>
+      </div>
+
+      <div class="auth-body">
+
+        <div class="auth-form-panel active" id="panel-login">
+          <h2 class="auth-form-title">Bienvenido de nuevo</h2>
+          <p class="auth-form-sub">Inicia sesión para acceder a tu CV guardado.</p>
+
+          <div class="auth-alert" id="login-alert"></div>
+
+          <form id="form-login" novalidate>
+            <div class="auth-field">
+              <label for="login-email">Correo electrónico</label>
+              <input type="email" id="login-email" placeholder="correo@ejemplo.com" autocomplete="email" />
+              <span class="auth-error" id="login-email-error"></span>
+            </div>
+            <div class="auth-field">
+              <label for="login-password">Contraseña</label>
+              <input type="password" id="login-password" placeholder="Tu contraseña" autocomplete="current-password" />
+              <span class="auth-error" id="login-password-error"></span>
+            </div>
+            <button type="submit" class="auth-btn-submit" id="btn-login">Iniciar sesión</button>
+          </form>
+
+          <div class="auth-divider">o</div>
+          <button class="auth-guest-btn" id="btn-guest" type="button">Continuar como invitado</button>
+        </div>
+
+        <div class="auth-form-panel" id="panel-register">
+          <h2 class="auth-form-title">Crear cuenta</h2>
+          <p class="auth-form-sub">Guarda y recupera tu CV desde cualquier dispositivo.</p>
+
+          <div class="auth-alert" id="register-alert"></div>
+          <div class="auth-success" id="register-success">
+            Revisa tu correo y confirma tu cuenta para poder iniciar sesión.
+          </div>
+
+          <form id="form-register" novalidate>
+            <div class="auth-field">
+              <label for="register-email">Correo electrónico</label>
+              <input type="email" id="register-email" placeholder="correo@ejemplo.com" autocomplete="email" />
+              <span class="auth-error" id="register-email-error"></span>
+            </div>
+            <div class="auth-field">
+              <label for="register-password">Contraseña</label>
+              <input type="password" id="register-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+              <span class="auth-error" id="register-password-error"></span>
+            </div>
+            <button type="submit" class="auth-btn-submit" id="btn-register">Crear cuenta</button>
+          </form>
+
+          <div class="auth-divider">o</div>
+          <button class="auth-guest-btn" id="btn-guest-register" type="button">Continuar como invitado</button>
+        </div>
+
+      </div>
+
+      <div class="auth-footer">
+        Tu información se guarda de forma privada y segura.<br />
+        Solo tú puedes acceder a tus datos.
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="db.js"></script>
+  <script>
+    (function () {
+      const GUEST_FLAG = 'cv-guest-mode';
+      const GUEST_DATA_KEY = 'cv-guest-data';
+
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+      }
+
+      document.getElementById('btn-theme').addEventListener('click', function () {
+        const dark = document.body.classList.toggle('dark');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      });
+
+      getSession().then(function (session) {
+        if (session) window.location.href = 'index.html';
+      });
+
+      function switchTab(active) {
+        document.getElementById('tab-login').classList.toggle('active', active === 'login');
+        document.getElementById('tab-register').classList.toggle('active', active === 'register');
+        document.getElementById('panel-login').classList.toggle('active', active === 'login');
+        document.getElementById('panel-register').classList.toggle('active', active === 'register');
+      }
+
+      document.getElementById('tab-login').addEventListener('click', function () { switchTab('login'); });
+      document.getElementById('tab-register').addEventListener('click', function () { switchTab('register'); });
+
+      function setAlert(id, msg) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg || '';
+        el.classList.toggle('show', !!msg);
+      }
+
+      function setFieldError(id, msg) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg || '';
+        el.classList.toggle('show', !!msg);
+        const inputId = id.replace('-error', '');
+        const input = document.getElementById(inputId);
+        if (input) input.classList.toggle('error', !!msg);
+      }
+
+      function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.disabled = loading;
+        btn.textContent = loading
+          ? (btnId === 'btn-login' ? 'Ingresando…' : 'Creando cuenta…')
+          : (btnId === 'btn-login' ? 'Iniciar sesión' : 'Crear cuenta');
+      }
+
+      function validateEmail(val) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      }
+
+      async function migrateGuestData() {
+        const raw = localStorage.getItem(GUEST_DATA_KEY);
+        if (!raw) return;
+        try {
+          const cvData = JSON.parse(raw);
+          await saveCV(cvData);
+          localStorage.removeItem(GUEST_DATA_KEY);
+        } catch (e) {}
+      }
+
+      document.getElementById('form-login').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        setAlert('login-alert', '');
+        setFieldError('login-email-error', '');
+        setFieldError('login-password-error', '');
+
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+
+        let valid = true;
+        if (!email) { setFieldError('login-email-error', 'El correo es obligatorio.'); valid = false; }
+        else if (!validateEmail(email)) { setFieldError('login-email-error', 'Ingresa un correo válido.'); valid = false; }
+        if (!password) { setFieldError('login-password-error', 'La contraseña es obligatoria.'); valid = false; }
+        if (!valid) return;
+
+        setLoading('btn-login', true);
+
+        const { error } = await signIn(email, password);
+
+        setLoading('btn-login', false);
+
+        if (error) {
+          const msg = error.message.includes('Invalid login')
+            ? 'Correo o contraseña incorrectos.'
+            : 'Error al iniciar sesión. Intenta de nuevo.';
+          setAlert('login-alert', msg);
+          return;
+        }
+
+        await migrateGuestData();
+        localStorage.removeItem(GUEST_FLAG);
+        window.location.href = 'index.html';
+      });
+
+      document.getElementById('form-register').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        setAlert('register-alert', '');
+        setFieldError('register-email-error', '');
+        setFieldError('register-password-error', '');
+
+        const email = document.getElementById('register-email').value.trim();
+        const password = document.getElementById('register-password').value;
+
+        let valid = true;
+        if (!email) { setFieldError('register-email-error', 'El correo es obligatorio.'); valid = false; }
+        else if (!validateEmail(email)) { setFieldError('register-email-error', 'Ingresa un correo válido.'); valid = false; }
+        if (!password) { setFieldError('register-password-error', 'La contraseña es obligatoria.'); valid = false; }
+        else if (password.length < 6) { setFieldError('register-password-error', 'Mínimo 6 caracteres.'); valid = false; }
+        if (!valid) return;
+
+        setLoading('btn-register', true);
+
+        const { data, error } = await signUp(email, password);
+
+        setLoading('btn-register', false);
+
+        if (error) {
+          const msg = error.message.includes('already registered')
+            ? 'Este correo ya tiene una cuenta. Intenta iniciar sesión.'
+            : 'No se pudo crear la cuenta. Intenta de nuevo.';
+          setAlert('register-alert', msg);
+          return;
+        }
+
+        if (data.session) {
+          await migrateGuestData();
+          localStorage.removeItem(GUEST_FLAG);
+          window.location.href = 'index.html';
+          return;
+        }
+
+        document.getElementById('form-register').style.display = 'none';
+        document.getElementById('register-success').classList.add('show');
+      });
+
+      function continueAsGuest() {
+        localStorage.setItem(GUEST_FLAG, '1');
+        window.location.href = 'index.html';
+      }
+
+      document.getElementById('btn-guest').addEventListener('click', continueAsGuest);
+      document.getElementById('btn-guest-register').addEventListener('click', continueAsGuest);
+    })();
+  </script>
+</body>
+</html>

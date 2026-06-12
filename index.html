@@ -17,6 +17,11 @@
         </div>
       </div>
       <div class="header-actions">
+        <div class="user-status" id="user-status" style="display:none;">
+          <span class="user-email" id="user-email"></span>
+          <span class="save-status" id="save-status"></span>
+          <button class="btn btn-ghost" id="btn-signout" type="button"></button>
+        </div>
         <button class="btn btn-icon" id="btn-theme" aria-label="Cambiar tema" title="Modo oscuro">
           <span class="theme-icon-sun">&#9788;</span>
           <span class="theme-icon-moon">&#9790;</span>
@@ -165,6 +170,9 @@
 
   <div id="print-area" class="print-only"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="db.js"></script>
+  <script src="auth-guard.js"></script>
   <script src="script.js"></script>
   <script>
     (function () {
